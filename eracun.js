@@ -45,6 +45,8 @@ function davcnaStopnja(izvajalec, zanr) {
   }
 }
 
+var stevec = 0;
+
 // Prikaz seznama pesmi na strani
 streznik.get('/', function(zahteva, odgovor) {
   pb.all("SELECT Track.TrackId AS id, Track.Name AS pesem, \
@@ -62,6 +64,12 @@ streznik.get('/', function(zahteva, odgovor) {
           LIMIT 100", function(napaka, vrstice) {
     if (napaka)
       odgovor.sendStatus(500);
+    
+    else if(stevec == 0) {
+      odgovor.redirect('/prijava');
+      stevec++;
+    }
+    
     else {
         for (var i=0; i<vrstice.length; i++)
           vrstice[i].stopnja = davcnaStopnja(vrstice[i].izvajalec, vrstice[i].zanr);
